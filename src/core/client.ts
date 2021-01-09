@@ -1,14 +1,17 @@
 import path from 'path';
 import { AkairoClient, CommandHandler, ListenerHandler } from 'discord-akairo';
 import TempChannels from 'discord-temp-channels';
-import { GuildMember } from 'discord.js';
-import { VoiceChannel } from 'discord.js';
+import type { GuildMember, VoiceChannel } from 'discord.js';
+import AutoroleTask from '../tasks/autorole';
 
 export default class ThizzClient extends AkairoClient {
 
     public commandHandler: CommandHandler;
     public listenerHandler: ListenerHandler;
     public tempChannelsHandler: TempChannels;
+
+    public autoroleTask: AutoroleTask;
+    public autoroleTaskCompleted: boolean;
 
     constructor() {
         super({
@@ -40,11 +43,17 @@ export default class ThizzClient extends AkairoClient {
                 }
             ]);
         });
-        
-    }
 
-    get server () {
-        return this.guilds.cache.get(process.env.TG_SERER!);
+        this.autoroleTask = new AutoroleTask(this);
+        this.autoroleTaskCompleted = true;
+        setInterval(() => {
+            if (!this.autoroleTaskCompleted) return;
+            else {
+                this.autoroleTaskCompleted = false;
+                this.autoroleTask.run().then(() => this.autoroleTaskCompleted = true);
+            }
+        }, this.autoroleTask.interval);
+        
     }
 
     async start () {
