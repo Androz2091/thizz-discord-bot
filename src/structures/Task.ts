@@ -2,13 +2,11 @@ import ThizzClient from "./Client";
 
 export class Task {
 
-    public name: string;
     public interval?: number = 1000;
     public client: ThizzClient;
-    public lastRunCompleted?: boolean;
+    public lastRunCompleted?: boolean = true;
 
-    constructor (client: ThizzClient, name: string) {
-        this.name = name;
+    constructor (client: ThizzClient) {
         this.client = client;
     }
 

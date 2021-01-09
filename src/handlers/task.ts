@@ -1,27 +1,30 @@
 import { readdirSync } from 'fs';
 import { Collection } from "discord.js";
 import { Task } from "../structures/Task";
+import ThizzClient from '../structures/Client';
 
 export default class TaskHandler {
 
+    public client: ThizzClient;
     public tasks: Collection<string, Task>;
-    public tasksIntervals: Collection<string, number>; 
+    public tasksIntervals: Collection<string, ReturnType<typeof setTimeout>>; 
 
-    constructor () {
+    constructor (client: ThizzClient) {
+        this.client = client;
         this.tasks = new Collection();
         this.tasksIntervals = new Collection();
     }
 
     load () {
-        const files = readdirSync('./tasks')
+        const files = readdirSync(`${__dirname}/../tasks`)
         files.forEach((file) => {
-            const task = require(`../tasks/${file}`);
-            this.tasks.set(task.name, task);
+            const CustomTask = require(`../tasks/${file}`);
+            const [taskName] = file.split('.');
+            const task = new CustomTask.default(this.client);
+            this.tasks.set(taskName, task);
+            this.tasksIntervals.set(taskName, setInterval(() => task.protectRun(), task.interval));
         });
-
-        this.tasks.forEach((task) => {
-            this.tasksIntervals.set(task.name, setInterval(() => task.protectRun(), task.interval));
-        })
+        return this;
     }
 
 };

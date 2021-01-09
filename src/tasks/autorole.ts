@@ -6,7 +6,7 @@ export default class AutoroleTask extends Task {
     public lastFetchedAt?: number = undefined;
 
     constructor (client: ThizzClient) {
-        super(client, 'autorole');
+        super(client);
     }
 
     async run () {

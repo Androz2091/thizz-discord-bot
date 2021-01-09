@@ -2,16 +2,14 @@ import path from 'path';
 import { AkairoClient, CommandHandler, ListenerHandler } from 'discord-akairo';
 import TempChannels from 'discord-temp-channels';
 import type { GuildMember, VoiceChannel } from 'discord.js';
-import AutoroleTask from '../tasks/autorole';
+import TaskHandler from '../handlers/task';
 
 export default class ThizzClient extends AkairoClient {
 
     public commandHandler: CommandHandler;
     public listenerHandler: ListenerHandler;
     public tempChannelsHandler: TempChannels;
-
-    public autoroleTask: AutoroleTask;
-    public autoroleTaskCompleted: boolean;
+    public taskHandler: TaskHandler;
 
     constructor() {
         super({
@@ -26,6 +24,8 @@ export default class ThizzClient extends AkairoClient {
         this.listenerHandler = new ListenerHandler(this, {
             directory: path.join(__dirname, '..', 'listeners/')
         });
+
+        this.taskHandler = new TaskHandler(this).load();
 
         this.tempChannelsHandler = new TempChannels(this);
         this.tempChannelsHandler.registerChannel(process.env.TEMP_CHANNELS_CHANNEL!, {
@@ -43,18 +43,6 @@ export default class ThizzClient extends AkairoClient {
                 }
             ]);
         });
-
-        this.autoroleTask = new AutoroleTask(this);
-        this.autoroleTaskCompleted = true;
-        setInterval(() => {
-            if (!this.autoroleTaskCompleted) return;
-            else {
-                this.autoroleTaskCompleted = false;
-                this.autoroleTask.run().then(() => {
-                    this.autoroleTaskCompleted = true;
-                });
-            }
-        }, this.autoroleTask.interval);
         
     }
 
