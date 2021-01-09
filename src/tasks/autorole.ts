@@ -21,11 +21,24 @@ export default class AutoroleTask {
         }
 
         server?.members.cache.forEach((member) => {
-            if (member.user.username.startsWith('TG')) member.roles.add(tgRole);
-            else member.roles.remove(tgRole);
 
-            if (member.user.presence.activities[0] && member.user.presence.activities[0].state?.includes('discord.gg/thizz')) member.roles.add(marketerRole);
-            else member.roles.remove(marketerRole); 
+            const hasTGUsername = member.user.username.startsWith('TG');
+            const hasTGRole = member.roles.cache.has(tgRole.id);
+
+            if (hasTGUsername && !hasTGRole) {
+                member.roles.add(tgRole.id);
+            } else if (!hasTGUsername && hasTGRole) {
+                member.roles.remove(tgRole.id);
+            }
+
+            const hasMarketerPresence = member.user.presence.activities[0]?.state?.includes('discord.gg/thizz');
+            const hasMarketerRole = member.roles.cache.has(marketerRole.id);
+
+            if (hasMarketerPresence && !hasMarketerRole) {
+                member.roles.add(marketerRole.id);
+            } else if (!hasMarketerPresence && hasMarketerRole) {
+                member.roles.remove(marketerRole.id);
+            }
         });
 
     }
