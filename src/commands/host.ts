@@ -44,7 +44,7 @@ class HostCommand extends Command {
             parent: process.env.HOST_CATEGORY
         }).then((channel) => {
             channel.createInvite().then((invite) => {
-                message.channel.send(`:white_check_mark: Your channel ${args.name} has been created. Click the invite join it! ${invite.url}`);
+                message.channel.send(`:white_check_mark: Your channel ${args.name} has been created. Click the invite to join it! ${invite.url}`);
             });
         });
 
