@@ -1,13 +1,12 @@
-import type ThizzClient from "../core/client"
+import type ThizzClient from "../structures/Client"
+import { Task } from "../structures/Task";
 
-export default class AutoroleTask {
+export default class AutoroleTask extends Task {
 
-    public interval = 1000;
     public lastFetchedAt?: number = undefined;
-    public client: ThizzClient;
 
     constructor (client: ThizzClient) {
-        this.client = client;
+        super(client, 'autorole');
     }
 
     async run () {

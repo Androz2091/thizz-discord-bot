@@ -8,7 +8,7 @@ class PingCommand extends Command {
         });
     }
 
-    async exec(message: Message) {
+    async exec (message: Message) {
         return message.channel.send(`Latency: **\`${this.client.ws.ping}ms\`**`)
     }
 }

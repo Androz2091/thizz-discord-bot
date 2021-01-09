@@ -50,7 +50,9 @@ export default class ThizzClient extends AkairoClient {
             if (!this.autoroleTaskCompleted) return;
             else {
                 this.autoroleTaskCompleted = false;
-                this.autoroleTask.run().then(() => this.autoroleTaskCompleted = true);
+                this.autoroleTask.run().then(() => {
+                    this.autoroleTaskCompleted = true;
+                });
             }
         }, this.autoroleTask.interval);
         

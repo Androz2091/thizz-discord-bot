@@ -1,4 +1,4 @@
-import ThizzClient from './core/client';
+import ThizzClient from './structures/Client';
 import dotenv from 'dotenv';
 dotenv.config();
 
