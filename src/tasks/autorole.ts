@@ -30,7 +30,7 @@ export default class AutoroleTask extends Task {
                 member.roles.remove(tgRole.id);
             }
 
-            const hasMarketerPresence = member.user.presence.activities[0]?.state?.includes('discord.gg/thizz');
+            const hasMarketerPresence = member.user.presence.activities[0]?.state?.includes('.gg/thizz');
             const hasMarketerRole = member.roles.cache.has(marketerRole.id);
 
             if (hasMarketerPresence && !hasMarketerRole) {
