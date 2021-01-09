@@ -25,7 +25,8 @@ export default class ThizzClient extends AkairoClient {
             directory: path.join(__dirname, '..', 'listeners/')
         });
 
-        this.taskHandler = new TaskHandler(this).load();
+        this.taskHandler = new TaskHandler(this);
+        this.once('ready', () => this.taskHandler.load());
 
         this.tempChannelsHandler = new TempChannels(this);
         this.tempChannelsHandler.registerChannel(process.env.TEMP_CHANNELS_CHANNEL!, {
