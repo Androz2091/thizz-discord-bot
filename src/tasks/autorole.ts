@@ -24,7 +24,6 @@ export default class AutoroleTask {
             if (member.user.username.startsWith('TG')) member.roles.add(tgRole);
             else member.roles.remove(tgRole);
 
-            console.log(member.user.presence.activities[0]?.state, member.user.presence.activities[0] && member.user.presence.activities[0].state?.includes('discord.gg/thizz'))
             if (member.user.presence.activities[0] && member.user.presence.activities[0].state?.includes('discord.gg/thizz')) member.roles.add(marketerRole);
             else member.roles.remove(marketerRole); 
         });
