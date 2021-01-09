@@ -1,0 +1,16 @@
+{
+  "name": "thizz-discord-bot",
+  "version": "1.0.0",
+  "main": "dist/bot.js",
+  "author": "Androz2091 <androz2091@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "discord-akairo": "^8.1.0",
+    "discord-temp-channels": "^1.0.5",
+    "discord.js": "^12.5.1",
+    "dotenv": "^8.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.20"
+  }
+}
