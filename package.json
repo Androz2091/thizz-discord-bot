@@ -4,6 +4,10 @@
   "main": "dist/bot.js",
   "author": "Androz2091 <androz2091@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "start": "node .",
+    "build": "tsc"
+  },
   "dependencies": {
     "discord-akairo": "^8.1.0",
     "discord-temp-channels": "^1.0.5",
