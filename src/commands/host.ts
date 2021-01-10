@@ -41,7 +41,7 @@ class HostCommand extends Command {
                     allow: ['PRIORITY_SPEAKER','MUTE_MEMBERS','DEAFEN_MEMBERS']
                 }
             ],
-            parent: process.env.HOST_CATEGORY
+            parent: process.env.HOST_CHANNELS_CATEGORY
         }).then((channel) => {
             channel.createInvite().then((invite) => {
                 message.channel.send(`:white_check_mark: Your channel ${args.name} has been created. Click the invite to join it! ${invite.url}`);
