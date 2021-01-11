@@ -22,6 +22,7 @@ export default class TaskHandler {
             // eslint-disable-next-line new-cap
             const task = new CustomTask.default(this.client);
             this.tasks.set(taskName, task);
+            task.protectRun();
             this.tasksIntervals.set(taskName, setInterval(() => task.protectRun(), task.interval));
         });
         return this;

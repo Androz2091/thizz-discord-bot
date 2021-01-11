@@ -16,6 +16,7 @@ export default class AutoroleTask extends Task {
 
     constructor (client: ThizzClient) {
         super(client);
+        this.interval = 30000;
 
         setInterval(() => {
             const time = Date.now();
