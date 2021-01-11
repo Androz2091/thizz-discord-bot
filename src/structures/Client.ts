@@ -3,9 +3,10 @@ import { AkairoClient, CommandHandler, ListenerHandler } from 'discord-akairo';
 import TempChannels from 'discord-temp-channels';
 import type { GuildMember, VoiceChannel } from 'discord.js';
 import TaskHandler from '../handlers/task';
+import { SlashCreator, GatewayServer } from 'slash-create';
 
 export default class ThizzClient extends AkairoClient {
-    public commandHandler: CommandHandler;
+    public slashCommandHandler: SlashCreator;
     public listenerHandler: ListenerHandler;
     public tempChannelsHandler: TempChannels;
     public taskHandler: TaskHandler;
@@ -15,10 +16,23 @@ export default class ThizzClient extends AkairoClient {
             ownerID: process.env.BOT_OWNER!
         });
 
-        this.commandHandler = new CommandHandler(this, {
-            directory: path.join(__dirname, '..', 'commands/'),
-            prefix: () => process.env.BOT_PREFIX!
+        this.slashCommandHandler = new SlashCreator({
+            applicationID: process.env.BOT_ID!,
+            token: process.env.BOT_TOKEN!,
+            publicKey: process.env.BOT_PUB_KEY! 
         });
+        this.slashCommandHandler
+        .withServer(
+            new GatewayServer(
+              (handler) => {
+                    this.on('raw', (event) => {
+                        if (event.t === 'INTERACTION_CREATE') handler(event.d);
+                    })
+                }
+            )
+          )
+          .registerCommandsIn(path.join(__dirname, '../interactions'))
+          .syncCommands();
 
         this.listenerHandler = new ListenerHandler(this, {
             directory: path.join(__dirname, '..', 'listeners/')
@@ -46,8 +60,6 @@ export default class ThizzClient extends AkairoClient {
     }
 
     async start () {
-        this.commandHandler.loadAll();
-        this.commandHandler.useListenerHandler(this.listenerHandler);
         this.listenerHandler.loadAll();
         return super.login(process.env.BOT_TOKEN);
     }
