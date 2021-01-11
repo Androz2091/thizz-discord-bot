@@ -6,7 +6,7 @@ interface HostArguments {
 };
 
 class HostCommand extends Command {
-    constructor() {
+    constructor () {
         super('host', {
             aliases: ['host', 'h'],
             args: [
@@ -24,7 +24,6 @@ class HostCommand extends Command {
     }
 
     async exec (message: Message, args: HostArguments) {
-        
         const hasHostRole = message.member?.roles.cache.has(process.env.HOST_ROLE!)!;
         if (!hasHostRole) return message.reply(':x: You are not allowed to use this command.');
 
@@ -38,7 +37,7 @@ class HostCommand extends Command {
                 },
                 {
                     id: process.env.HOST_ROLE!,
-                    allow: ['PRIORITY_SPEAKER','MUTE_MEMBERS','DEAFEN_MEMBERS']
+                    allow: ['PRIORITY_SPEAKER', 'MUTE_MEMBERS', 'DEAFEN_MEMBERS']
                 }
             ],
             parent: process.env.HOST_CHANNELS_CATEGORY
@@ -47,7 +46,6 @@ class HostCommand extends Command {
                 message.channel.send(`:white_check_mark: Your channel ${args.name} has been created. Click the invite to join it! ${invite.url}`);
             });
         });
-
     }
 }
 

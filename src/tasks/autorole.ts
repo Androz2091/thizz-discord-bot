@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import { GuildMember, Snowflake } from 'discord.js';
 import type ThizzClient from '../structures/Client';
-import Task from "../structures/Task";
+import Task from '../structures/Task';
 
 interface WaitingRole {
     value: Snowflake;
@@ -11,7 +11,6 @@ interface WaitingRole {
 type RoleChangeType = 'add' | 'remove';
 
 export default class AutoroleTask extends Task {
-
     public lastFetchedAt?: number = undefined;
     public waitingForRoles: WaitingRole[] = [];
 
@@ -42,7 +41,6 @@ export default class AutoroleTask extends Task {
     }
 
     async run () {
-
         const server = this.client.guilds.cache.get(process.env.THIZZ_SERVER!);
         const tgRole = server?.roles.cache.get(process.env.TG_ROLE!)!;
         const marketerRole = server?.roles.cache.get(process.env.MARKETER_ROLE!)!;
@@ -52,7 +50,6 @@ export default class AutoroleTask extends Task {
         }
 
         server?.members.cache.forEach((member) => {
-
             const hasTGUsername = member.user.username.startsWith('TG');
             const hasTGRole = member.roles.cache.has(tgRole.id);
 
@@ -71,7 +68,5 @@ export default class AutoroleTask extends Task {
                 this.changeRole(member, marketerRole.id, 'remove');
             }
         });
-
     }
-
 };

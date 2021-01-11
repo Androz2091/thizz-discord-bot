@@ -5,13 +5,12 @@ import type { GuildMember, VoiceChannel } from 'discord.js';
 import TaskHandler from '../handlers/task';
 
 export default class ThizzClient extends AkairoClient {
-
     public commandHandler: CommandHandler;
     public listenerHandler: ListenerHandler;
     public tempChannelsHandler: TempChannels;
     public taskHandler: TaskHandler;
 
-    constructor() {
+    constructor () {
         super({
             ownerID: process.env.BOT_OWNER!
         });
@@ -36,15 +35,14 @@ export default class ThizzClient extends AkairoClient {
             childMaxUsers: 5,
             childFormat: (member, count) => `${member.user.username}'s channel`
         });
-        this.tempChannelsHandler.on("childCreate", (member: GuildMember, channel: VoiceChannel) => {
+        this.tempChannelsHandler.on('childCreate', (member: GuildMember, channel: VoiceChannel) => {
             channel.overwritePermissions([
                 {
                     id: member.user.id,
-                    allow: [ 'MANAGE_CHANNELS' ]
+                    allow: ['MANAGE_CHANNELS']
                 }
             ]);
         });
-        
     }
 
     async start () {
