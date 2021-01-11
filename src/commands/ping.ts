@@ -1,15 +1,12 @@
-import { Command } from 'discord-akairo';
-import { Message } from 'discord.js';
+import ThizzClient from '../structures/Client';
+import Command from '../structures/Command';
 
 class PingCommand extends Command {
-    constructor() {
-        super('ping', {
-            aliases: ['ping']
-        });
+    constructor (client: ThizzClient) {
+        super(client, 'ping', {});
     }
 
-    async exec (message: Message) {
-        return message.channel.send(`Latency: **\`${this.client.ws.ping}ms\`**`)
+    async exec () {
     }
 }
 
