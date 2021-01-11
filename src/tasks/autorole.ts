@@ -1,11 +1,42 @@
+import chalk from 'chalk';
+import { GuildMember, Snowflake } from 'discord.js';
 import type ThizzClient from '../structures/Client';
 import Task from '../structures/Task';
 
+interface WaitingRole {
+    value: Snowflake;
+    time: number;
+}
+
+type RoleChangeType = 'add' | 'remove';
+
 export default class AutoroleTask extends Task {
     public lastFetchedAt?: number = undefined;
+    public waitingForRoles: WaitingRole[] = [];
 
     constructor (client: ThizzClient) {
         super(client);
+
+        setInterval(() => {
+            const time = Date.now();
+            this.waitingForRoles = this.waitingForRoles.filter((item) => {
+                return time < item.time + (30000);
+            });
+        }, 500);
+    }
+
+    async changeRole (member: GuildMember, roleID: Snowflake, type: RoleChangeType) {
+        if (this.waitingForRoles.some((element) => element.value === member.id)) {
+            console.log(chalk.yellow(`${member.user.tag} is still waiting for their roles...`));
+        }
+        this.waitingForRoles.push({
+            value: member.id,
+            time: Date.now()
+        });
+        (type === 'add' ? member.roles.add : member.roles.remove)(roleID).then(() => {
+            console.log(chalk.yellow(`${member.user.tag} has got their roles!`));
+            this.waitingForRoles = this.waitingForRoles.filter((element) => element.value !== member.id);
+        });
     }
 
     async run () {
@@ -22,18 +53,18 @@ export default class AutoroleTask extends Task {
             const hasTGRole = member.roles.cache.has(tgRole.id);
 
             if (hasTGUsername && !hasTGRole) {
-                member.roles.add(tgRole.id);
+                this.changeRole(member, tgRole.id, 'add');
             } else if (!hasTGUsername && hasTGRole) {
-                member.roles.remove(tgRole.id);
+                this.changeRole(member, tgRole.id, 'remove');
             }
 
             const hasMarketerPresence = member.user.presence.activities[0]?.state?.includes('.gg/thizz');
             const hasMarketerRole = member.roles.cache.has(marketerRole.id);
 
             if (hasMarketerPresence && !hasMarketerRole) {
-                member.roles.add(marketerRole.id);
+                this.changeRole(member, marketerRole.id, 'add');
             } else if (!hasMarketerPresence && hasMarketerRole) {
-                member.roles.remove(marketerRole.id);
+                this.changeRole(member, marketerRole.id, 'remove');
             }
         });
     }
