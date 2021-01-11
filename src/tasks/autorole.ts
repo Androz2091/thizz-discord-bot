@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import { GuildMember, Snowflake } from 'discord.js';
 import type ThizzClient from '../structures/Client';
-import { Task } from "../structures/Task";
+import Task from "../structures/Task";
 
 interface WaitingRole {
     value: Snowflake;

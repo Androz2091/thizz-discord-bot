@@ -1,6 +1,6 @@
 import ThizzClient from "./Client";
 
-export class Task {
+export default class Task {
 
     public interval?: number = 1000;
     public client: ThizzClient;
