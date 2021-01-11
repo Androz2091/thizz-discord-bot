@@ -34,7 +34,8 @@ export default class AutoroleTask extends Task {
             value: member.id,
             time: Date.now()
         });
-        (type === 'add' ? member.roles.add : member.roles.remove)(roleID).then(() => {
+        const promise = type === 'add' ? member.roles.add(roleID) : member.roles.remove(roleID);
+        promise.then(() => {
             console.log(chalk.yellow(`${member.user.tag} has got their roles!`));
             this.waitingForRoles = this.waitingForRoles.filter((element) => element.value !== member.id);
         });
