@@ -1,44 +1,56 @@
-import { Client, GuildMember, VoiceChannel } from 'discord.js';
-
-import Interactions from 'discord-slash-commands-client';
-import TempChannelsHandler from 'discord-temp-channels';
+import path from 'path';
+import { AkairoClient, CommandHandler, ListenerHandler } from 'discord-akairo';
+import TempChannels from 'discord-temp-channels';
+import type { GuildMember, VoiceChannel } from 'discord.js';
 import TaskHandler from '../handlers/task';
-import EventHandler from '../handlers/event';
-import CommandHandler from '../handlers/command';
 
-export default class ThizzClient extends Client {
+export default class ThizzClient extends AkairoClient {
+
     public commandHandler: CommandHandler;
-    public eventHandler: EventHandler;
-    public tempChannelsHandler: TempChannelsHandler;
+    public listenerHandler: ListenerHandler;
+    public tempChannelsHandler: TempChannels;
     public taskHandler: TaskHandler;
-    public interactionsHandler: Interactions.Client;
 
-    constructor () {
-        super();
+    constructor() {
+        super({
+            ownerID: process.env.BOT_OWNER!
+        });
 
-        this.commandHandler = new CommandHandler(this).load();
-        this.tempChannelsHandler = new TempChannelsHandler(this);
-        this.eventHandler = new EventHandler(this).load();
+        this.commandHandler = new CommandHandler(this, {
+            directory: path.join(__dirname, '..', 'commands/'),
+            prefix: () => process.env.BOT_PREFIX!
+        });
+
+        this.listenerHandler = new ListenerHandler(this, {
+            directory: path.join(__dirname, '..', 'listeners/')
+        });
+
         this.taskHandler = new TaskHandler(this);
-        this.interactionsHandler = new Interactions.Client(process.env.BOT_TOKEN!, process.env.BOT_ID!);
-
         this.once('ready', () => this.taskHandler.load());
+
+        this.tempChannelsHandler = new TempChannels(this);
         this.tempChannelsHandler.registerChannel(process.env.TEMP_CHANNELS_CHANNEL!, {
             childCategory: process.env.TEMP_CHANNELS_CATEGORY!,
             childAutoDelete: true,
             childAutoDeleteIfOwnerLeaves: true,
             childMaxUsers: 5,
-            childFormat: (member) => `${member.user.username}'s channel`
+            childFormat: (member, count) => `${member.user.username}'s channel`
         });
-        this.tempChannelsHandler.on('childCreate', (member: GuildMember, channel: VoiceChannel) => {
-            channel.overwritePermissions([{
-                id: member.user.id,
-                allow: ['MANAGE_CHANNELS']
-            }]);
+        this.tempChannelsHandler.on("childCreate", (member: GuildMember, channel: VoiceChannel) => {
+            channel.overwritePermissions([
+                {
+                    id: member.user.id,
+                    allow: [ 'MANAGE_CHANNELS' ]
+                }
+            ]);
         });
+        
     }
 
     async start () {
+        this.commandHandler.loadAll();
+        this.commandHandler.useListenerHandler(this.listenerHandler);
+        this.listenerHandler.loadAll();
         return super.login(process.env.BOT_TOKEN);
     }
 };

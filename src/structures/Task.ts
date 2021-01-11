@@ -1,6 +1,7 @@
-import ThizzClient from './Client';
+import ThizzClient from "./Client";
 
-export default class Task {
+export class Task {
+
     public interval?: number = 1000;
     public client: ThizzClient;
     public lastRunCompleted?: boolean = true;
@@ -15,9 +16,10 @@ export default class Task {
             this.lastRunCompleted = false;
             this.run().then(() => {
                 this.lastRunCompleted = true;
-            });
+            })
         }
     }
 
     async run () {}
+
 };
