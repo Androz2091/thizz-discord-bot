@@ -1,5 +1,5 @@
 import path from 'path';
-import { AkairoClient, CommandHandler, ListenerHandler } from 'discord-akairo';
+import { AkairoClient, ListenerHandler } from 'discord-akairo';
 import TempChannels from 'discord-temp-channels';
 import type { GuildMember, VoiceChannel } from 'discord.js';
 import TaskHandler from '../handlers/task';
