@@ -1,13 +1,11 @@
 import path from 'path';
-import { AkairoClient, ListenerHandler } from 'discord-akairo';
+import { AkairoClient, CommandHandler, ListenerHandler } from 'discord-akairo';
 import TempChannels from 'discord-temp-channels';
 import type { GuildMember, VoiceChannel } from 'discord.js';
 import TaskHandler from '../handlers/task';
-import CommandHandler from '../handlers/command';
 import { SlashCreator, GatewayServer } from 'slash-create';
 
 export default class ThizzClient extends AkairoClient {
-    public slashCommandLoader: CommandHandler;
     public slashCommandHandler: SlashCreator;
     public listenerHandler: ListenerHandler;
     public tempChannelsHandler: TempChannels;
@@ -32,10 +30,9 @@ export default class ThizzClient extends AkairoClient {
                     })
                 }
             )
-        )
-        .on('commandReregister', () => console.log('Synced'))
-        this.slashCommandLoader = new CommandHandler(this).load();
-        this.slashCommandHandler.syncCommands();
+          )
+          .registerCommandsIn(path.join(__dirname, '../interactions'))
+          .syncCommands();
 
         this.listenerHandler = new ListenerHandler(this, {
             directory: path.join(__dirname, '..', 'listeners/')
