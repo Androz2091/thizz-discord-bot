@@ -2,6 +2,8 @@ import { CommandContext, SlashCommand, SlashCreator } from 'slash-create';
 import jobs from '../assets/jobs.json';
 import { getUser, updateUser } from '../database/models/User';
 
+const applyCooldown = 60000; // 1 hour in game time
+
 export default class ApplyCommand extends SlashCommand {
     constructor (creator: SlashCreator) {
         super(creator, {
@@ -29,12 +31,24 @@ export default class ApplyCommand extends SlashCommand {
             return;
         }
 
+        const lastApplyAt = new Date(userData.lastApplyAt).getTime();
+        const cooldownEnd = lastApplyAt + applyCooldown;
+        const cooldown = cooldownEnd > Date.now()
+        if (cooldown) {
+            ctx.send('You can only apply for a job every one hour in game time, retry in ' + ((cooldownEnd - Date.now())/1000).toFixed(0) + ' seconds.', {
+                includeSource: false,
+                ephemeral: true
+            });
+            return;
+        }
+
         const jobData = jobs.find((j) => j.name === job)!;
-        const hasJob = Math.random() > jobData.chance - 100;
+        const hasJob = Math.random() < jobData.chance / 100;
         if (hasJob) {
 
             updateUser(ctx.member.id, {
-                job: jobData.name
+                job: jobData.name,
+                lastApplyAt: new Date().toISOString()
             });
             
             ctx.send(':tada: Congratulations, you got the job! Get your salary ' + jobData.salary + ' every hour by using `/work`!', {
@@ -43,6 +57,11 @@ export default class ApplyCommand extends SlashCommand {
             });
 
         } else {
+
+            updateUser(ctx.member.id, {
+                lastApplyAt: new Date().toISOString()
+            });
+
             ctx.send(':x: Your application has been rejected! You will be able to submit a new one in one hour.', {
                 includeSource: true,
                 ephemeral: false

@@ -4,10 +4,10 @@ import { database } from '../';
 
 export class User extends Model {
   public id!: number;
-  public job!: string;
+  public job!: string|null;
   public money!: number;
-  public lastApplyAt!: number;
-  public lastWorkAt!: number;
+  public lastApplyAt!: string;
+  public lastWorkAt!: string;
   public workTimes!: number;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -24,6 +24,21 @@ User.init(
             allowNull: true
         },
         money: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 0
+        },
+        lastApplyAt: {
+            type: DataTypes.DATE,
+            allowNull: false,
+            defaultValue: 0
+        },
+        lastWorkAt: {
+            type: DataTypes.DATE,
+            allowNull: false,
+            defaultValue: 0
+        },
+        workTimes: {
             type: DataTypes.INTEGER,
             allowNull: false,
             defaultValue: 0
