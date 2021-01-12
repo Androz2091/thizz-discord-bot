@@ -2,11 +2,9 @@ import { Snowflake } from 'discord.js';
 import { Model, DataTypes } from 'sequelize';
 import { database } from '../';
 
-type JobType = 'Barbershop' | 'Cashier' | 'Office Clerk' | 'Doctor' | 'Waiter' | 'Janitor' | 'Teacher';
-
 export class User extends Model {
   public id!: number;
-  public job!: JobType;
+  public job!: string;
   public money!: number;
   public lastApplyAt!: number;
   public lastWorkAt!: number;
@@ -49,6 +47,18 @@ export const getUser = (userID: Snowflake): Promise<User> => {
             }
         }).then((res) => {
             resolve(res[0]);
+        });
+    });
+};
+
+export const updateUser = (userID: Snowflake, newData: Partial<User>): Promise<void> => {
+    return new Promise((resolve) => {
+        User.update(newData, {
+            where: {
+                id: userID
+            }
+        }).then(() => {
+            resolve();
         });
     });
 };
