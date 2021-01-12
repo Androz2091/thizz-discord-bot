@@ -1,5 +1,4 @@
 import { CommandContext, SlashCommand, SlashCreator } from 'slash-create';
-import jobs from '../assets/jobs.json';
 import { getUser, updateUser } from '../database/models/User';
 
 export default class QuitCommand extends SlashCommand {
