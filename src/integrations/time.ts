@@ -1,10 +1,10 @@
 import { SlashCreator, SlashCommand, CommandContext } from 'slash-create';
 
-export default class HelloCommand extends SlashCommand {
+export default class TimeCommand extends SlashCommand {
     constructor (creator: SlashCreator) {
         super(creator, {
-            name: 'host',
-            description: 'Create a new host channel',
+            name: 'time',
+            description: 'Get the current time in Thizz land!',
             guildID: process.env.THIZZ_SERVER!
         });
 
