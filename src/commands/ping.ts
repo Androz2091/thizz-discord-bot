@@ -1,16 +1,21 @@
-import { Command } from 'discord-akairo';
-import { Message } from 'discord.js';
+import { SlashCreator, SlashCommand, CommandContext } from 'slash-create';
+import { client } from '../bot';
 
-class PingCommand extends Command {
-    constructor () {
-        super('ping', {
-            aliases: ['ping']
+export default class PingCommand extends SlashCommand {
+    constructor (creator: SlashCreator) {
+        super(creator, {
+            name: 'ping',
+            description: 'Get the bot\'s latency',
+            guildID: process.env.THIZZ_SERVER!
+        });
+
+        // Not required initially, but required for reloading with a fresh file.
+        this.filePath = __filename;
+    }
+
+    async run (ctx: CommandContext) {
+        ctx.send(`Pong! Latency: \`${client.ws.ping}ms\``, {
+            includeSource: true
         });
     }
-
-    async exec (message: Message) {
-        return message.channel.send(`Latency: **\`${this.client.ws.ping}ms\`**`);
-    }
-}
-
-export default PingCommand;
+};
