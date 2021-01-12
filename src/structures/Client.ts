@@ -19,20 +19,20 @@ export default class ThizzClient extends AkairoClient {
         this.slashCommandHandler = new SlashCreator({
             applicationID: process.env.BOT_ID!,
             token: process.env.BOT_TOKEN!,
-            publicKey: process.env.BOT_PUB_KEY! 
+            publicKey: process.env.BOT_PUB_KEY!
         });
         this.slashCommandHandler
-        .withServer(
-            new GatewayServer(
-              (handler) => {
-                    this.on('raw', (event) => {
-                        if (event.t === 'INTERACTION_CREATE') handler(event.d);
-                    })
-                }
+            .withServer(
+                new GatewayServer(
+                    (handler) => {
+                        this.on('raw', (event) => {
+                            if (event.t === 'INTERACTION_CREATE') handler(event.d);
+                        });
+                    }
+                )
             )
-          )
-          .registerCommandsIn(path.join(__dirname, '../interactions'))
-          .syncCommands();
+            .registerCommandsIn(path.join(__dirname, '../interactions'))
+            .syncCommands();
 
         this.listenerHandler = new ListenerHandler(this, {
             directory: path.join(__dirname, '..', 'listeners/')
