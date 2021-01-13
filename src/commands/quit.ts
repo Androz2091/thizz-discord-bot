@@ -31,4 +31,4 @@ export default class QuitCommand extends SlashCommand {
             });
         }
     }
-}
+};
