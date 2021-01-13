@@ -1,4 +1,4 @@
-import { Snowflake, MessageEmbed } from 'discord.js';
+import { Snowflake, MessageEmbed, TextChannel } from 'discord.js';
 import { CommandContext, SlashCommand, SlashCreator } from 'slash-create';
 import { client } from '../bot';
 import { getUser } from '../database/models/User';
@@ -21,6 +21,15 @@ export default class StatsCommand extends SlashCommand {
     }
 
     async run (ctx: CommandContext) {
+
+        const category = (client.channels.cache.get(ctx.channelID) as TextChannel).parentID;
+        if (category !== process.env.GANG_CAT) {
+            ctx.send('Commands can only be executed in the Gang Life category.', {
+                includeSource: false,
+                ephemeral: true
+            });
+        }
+
         const userID = ctx.options.user as Snowflake || ctx.member.id;
         const isAuthor = userID === ctx.member.id;
 
@@ -46,7 +55,6 @@ export default class StatsCommand extends SlashCommand {
 
         ctx.send(`<@${ctx.member.id}>, here are ${tag}'s stats!`, {
             includeSource: true,
-            ephemeral: false,
             embeds: [
                 embed.toJSON()
             ]
