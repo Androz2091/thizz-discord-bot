@@ -14,8 +14,7 @@ export default class JobsCommand extends SlashCommand {
             'Here is the list of the available jobs! Use \`/apply\` to apply for a job!\n\n'+
             jobs.reverse().map((job) => `${job.name} - $${job.salary} per hour`).join('\n')
         , {
-            includeSource: true,
-            ephemeral: false
+            includeSource: true
         });
     }
 }

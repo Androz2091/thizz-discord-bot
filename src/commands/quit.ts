@@ -26,8 +26,7 @@ export default class QuitCommand extends SlashCommand {
             });
 
             ctx.send(':white_check_mark: You are no longer a ' + previousJob.toLocaleLowerCase() + '!', {
-                includeSource: true,
-                ephemeral: false
+                includeSource: true
             });
         }
     }

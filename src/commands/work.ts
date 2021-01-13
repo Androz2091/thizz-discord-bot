@@ -27,23 +27,22 @@ export default class WorkCommand extends SlashCommand {
             const cooldown = cooldownEnd > Date.now()
             if (cooldown) {
                 ctx.send('You can only work every one hour in game time, retry in ' + ((cooldownEnd - Date.now())/1000).toFixed(0) + ' seconds.', {
-                    includeSource: false,
-                    ephemeral: true
+                    includeSource: true
                 });
                 return;
             }
 
             const jobData = jobs.find((j) => j.name === userData.job)!;
+            const salary = userData.workLevel * 2 + jobData.salary;
 
             updateUser(ctx.member.id, {
                 workTimes: userData.workTimes+1,
-                money: userData.money + jobData.salary,
+                money: userData.money + salary,
                 lastWorkAt: new Date().toISOString()
             });
 
-            ctx.send(':tada: You worked and were paid **$' + jobData.salary + '**!', {
-                includeSource: true,
-                ephemeral: false
+            ctx.send(':tada: You worked and were paid **$' + salary + '**!', {
+                includeSource: true
             });
         }
     }

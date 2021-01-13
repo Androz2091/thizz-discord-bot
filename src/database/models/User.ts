@@ -9,6 +9,7 @@ export class User extends Model {
   public lastApplyAt!: string;
   public lastWorkAt!: string;
   public workTimes!: number;
+  public workLevel!: number;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -42,6 +43,11 @@ User.init(
             type: DataTypes.INTEGER,
             allowNull: false,
             defaultValue: 0
+        },
+        workLevel: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 0
         }
     },
     {
@@ -51,7 +57,7 @@ User.init(
 );
 
 if (process.env.ENVIRONMENT === 'development') {
-    User.sync({ alter: true }).then(() => console.log('User table created'));
+    User.sync({ force: true }).then(() => console.log('User table created'));
 }
 
 export const getUser = (userID: Snowflake): Promise<User> => {
