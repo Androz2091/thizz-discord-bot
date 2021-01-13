@@ -1,6 +1,6 @@
 # Thizz Discord Bot
 
-Official Discord bot for the Thizzkid server (discord.gg/thizzkid) made using [discord-akairo](https://github.com/discord-akairo/discord-akairo) and TypeScript.
+Official Discord bot for the Thizzkid server (discord.gg/thizzkid) made using **Discord Slash Commands**, **Sequelize** and **TypeScript**!
 
 ## Installation
 
