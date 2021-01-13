@@ -28,6 +28,7 @@ export default class StatsCommand extends SlashCommand {
                 includeSource: false,
                 ephemeral: true
             });
+            return;
         }
 
         const userID = ctx.options.user as Snowflake || ctx.member.id;

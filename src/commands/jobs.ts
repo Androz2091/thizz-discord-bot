@@ -19,6 +19,7 @@ export default class JobsCommand extends SlashCommand {
                 includeSource: false,
                 ephemeral: true
             });
+            return;
         }
 
         ctx.send(

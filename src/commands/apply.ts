@@ -30,6 +30,7 @@ export default class ApplyCommand extends SlashCommand {
                 includeSource: false,
                 ephemeral: true
             });
+            return;
         }
 
         const job = ctx.options.job as string;

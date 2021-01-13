@@ -19,6 +19,7 @@ export default class QuitCommand extends SlashCommand {
                 includeSource: false,
                 ephemeral: true
             });
+            return;
         }
 
         const userData = await getUser(ctx.member.id);

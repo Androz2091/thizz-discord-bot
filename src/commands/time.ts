@@ -22,6 +22,7 @@ export default class TimeCommand extends SlashCommand {
                 includeSource: false,
                 ephemeral: true
             });
+            return;
         }
 
         const emoji = new Date().getMinutes() > 19 || new Date().getMinutes() < 8 ? ':night_with_stars:' : ':sunrise_over_mountains:';
