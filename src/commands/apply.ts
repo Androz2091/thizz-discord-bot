@@ -2,7 +2,7 @@ import { CommandContext, SlashCommand, SlashCreator } from 'slash-create';
 import jobs from '../assets/jobs.json';
 import { getUser, updateUser } from '../database/models/User';
 
-const applyCooldown = 60000; // 1 hour in game time
+const applyCooldown = 60000 * 60;
 
 export default class ApplyCommand extends SlashCommand {
     constructor (creator: SlashCreator) {
