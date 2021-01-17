@@ -42,10 +42,10 @@ export default class StatsCommand extends SlashCommand {
         console.log(userData.hunger.toString());
         const hunger = userData.hunger.toString().includes('.') && !userData.hunger.toFixed(1).endsWith('.0') ?
             userData.hunger.toFixed(1) :
-            userData.hunger;
+            Math.round(userData.hunger);
         const health = userData.health.toString().includes('.') && !userData.health.toFixed(1).endsWith('.0') ?
             userData.health.toFixed(1) :
-            userData.health;
+            Math.round(userData.health);
         const jobData = userData.job ? jobs.find((j) => j.name === userData.job) : null;
 
         const embed = new MessageEmbed()
