@@ -4,7 +4,7 @@ import { database } from '../';
 import { Food } from '../../types/food';
 
 export class User extends Model {
-  public id!: number;
+  public id!: string;
   public job!: string|null;
   public money!: number;
   public health!: number;
@@ -78,6 +78,21 @@ User.init(
 if (process.env.ENVIRONMENT === 'development') {
     User.sync({ force: true }).then(() => console.log('User table created'));
 }
+
+export const getUsers = (): Promise<User[]> => {
+    return new Promise((resolve) => {
+        User.findAll().then((res) => {
+            resolve(res);
+        });
+    });
+};
+
+/*
+export const updateUsers = (): Promise<void> => {
+    return new Promise((resolve) => {
+    });
+};
+*/
 
 export const getUser = (userID: Snowflake): Promise<User> => {
     return new Promise((resolve) => {
