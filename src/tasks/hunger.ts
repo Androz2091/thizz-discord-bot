@@ -11,12 +11,11 @@ export default class HungerTask extends Task {
     async run () {
         getUsers().then((users) => {
             users.forEach((user) => {
-                let newHunger = user.hunger - 10;
+                let newHunger = user.hunger - 0.023;
                 let newHealth = user.health;
                 let newMoney = user.money;
                 let newFoods = user.foods;
                 if (newHunger <= 0) {
-                    console.log(`user hunger was ${user.hunger} `);
                     newHunger = 0;
                     if (user.hunger > 0) {
                         // send warning message
