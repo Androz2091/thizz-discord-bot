@@ -1,11 +1,15 @@
 import { Snowflake } from 'discord.js';
 import { Model, DataTypes } from 'sequelize';
 import { database } from '../';
+import { Food } from '../../types/food';
 
 export class User extends Model {
   public id!: number;
   public job!: string|null;
   public money!: number;
+  public health!: number;
+  public hunger!: number;
+  public foods!: Food[];
   public lastApplyAt!: string;
   public lastWorkAt!: string;
   public workTimes!: number;
@@ -28,6 +32,21 @@ User.init(
             type: DataTypes.INTEGER,
             allowNull: false,
             defaultValue: 0
+        },
+        health: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 100
+        },
+        hunger: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 100
+        },
+        foods: {
+            type: new DataTypes.ARRAY(DataTypes.JSON),
+            allowNull: false,
+            defaultValue: []
         },
         lastApplyAt: {
             type: DataTypes.DATE,
