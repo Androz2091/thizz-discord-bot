@@ -38,7 +38,7 @@ User.init(
             allowNull: false,
             defaultValue: 100000,
             set (value: number) {
-                this.setDataValue('health', value * 1000);
+                this.setDataValue('health', Math.round(value * 1000));
             },
             get () {
                 return this.getDataValue('health') / 1000;
@@ -89,7 +89,8 @@ User.init(
 );
 
 if (process.env.ENVIRONMENT === 'development') {
-    User.sync({ alter: true }).then(() => console.log('User table created'));
+    if (process.argv.includes('--reset')) User.sync({ force: true }).then(() => console.log('User table created'));
+    if (process.argv.includes('--sync')) User.sync({ alter: true }).then(() => console.log('User table synced'));
 }
 
 export const getUsers = (): Promise<User[]> => {

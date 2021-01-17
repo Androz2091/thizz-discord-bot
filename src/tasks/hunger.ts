@@ -11,24 +11,26 @@ export default class HungerTask extends Task {
     async run () {
         getUsers().then((users) => {
             users.forEach((user) => {
-                let newHunger = user.hunger - 0.023;
+                let newHunger = user.hunger - 10;
                 let newHealth = user.health;
                 let newMoney = user.money;
                 let newFoods = user.foods;
-                if (newHunger < 0) {
+                if (newHunger <= 0) {
+                    console.log(`user hunger was ${user.hunger} `);
                     newHunger = 0;
                     if (user.hunger > 0) {
                         // send warning message
-                        this.client.users.fetch(user.id).then((u) => u.send(':x: Be aware! You will die if you don\'t eat in the next 3 hours!'));
+                        this.client.users.fetch(user.id).then((u) => u.send(':fries: Watch out! You will starve if you do not eat within the next 3 hours!'));
                     }
                     newHealth = newHealth - 0.55;
                     if (newHealth < 0) {
                         // reset the stats
-                        newHealth = 0;
+                        newHealth = 100;
+                        newHunger = 100;
                         newMoney = 0;
                         newFoods = [];
                         // send warning message
-                        this.client.users.fetch(user.id).then((u) => u.send(':x: You died of hunger...'));
+                        this.client.users.fetch(user.id).then((u) => u.send(':confused: You starved to death...'));
                     }
                 }
                 updateUser(user.id, {
