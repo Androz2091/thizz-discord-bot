@@ -1,8 +1,6 @@
-import { TextChannel } from 'discord.js';
 import { CommandContext, SlashCommand, SlashCreator } from 'slash-create';
 import { getUser, updateUser } from '../database/models/User';
 import jobs from '../assets/jobs.json';
-import { client } from '../bot';
 
 const workCooldown = 60000;
 
@@ -15,6 +13,7 @@ export default class WorkCommand extends SlashCommand {
         });
     }
     async run (ctx: CommandContext) {
+        /*
         const category = (client.channels.cache.get(ctx.channelID) as TextChannel).parentID;
         if (category !== process.env.GANG_CAT) {
             ctx.send('Commands can only be executed in the Gang Life category.', {
@@ -23,6 +22,7 @@ export default class WorkCommand extends SlashCommand {
             });
             return;
         }
+        */
 
         const userData = await getUser(ctx.member.id);
         if (!userData.job) {
