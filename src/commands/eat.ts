@@ -6,7 +6,7 @@ export default class EatCommand extends SlashCommand {
     constructor (creator: SlashCreator) {
         super(creator, {
             name: 'eat',
-            description: 'Buy food to eat it later!',
+            description: 'Eat something to gain hunger percents!',
             options: [
                 {
                     type: 3,
