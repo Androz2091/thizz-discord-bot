@@ -21,7 +21,6 @@ export default class StatsCommand extends SlashCommand {
     }
 
     async run (ctx: CommandContext) {
-
         const category = (client.channels.cache.get(ctx.channelID) as TextChannel).parentID;
         if (category !== process.env.GANG_CAT) {
             ctx.send('Commands can only be executed in the Gang Life category.', {
@@ -44,13 +43,12 @@ export default class StatsCommand extends SlashCommand {
         const embed = new MessageEmbed()
             .addField(`Money`, isAuthor ? `You currently have **$${userData.money}** at the bank! :moneybag:` : `${user} has currently **$${userData.money}** at the bank! :moneybag:`)
             .addField('Health', isAuthor ? `You are currently **${health}%** healthy! :heart_decoration:` : `${user} is currently **${health}%** healthy! :heart_decoration:`)
-            .addField('Job', 
+            .addField('Job',
                 isAuthor ?
-                    jobData ? `You are currently a **${jobData.name}**, paid **$${jobData.salary}** per hour! :man_in_tuxedo:`
-                            : `You currently have no jobs! :man_in_tuxedo:`
-                    :
-                    jobData ? `${user} is currently a **${jobData.name}**, paid **$${jobData.salary}** per hour! :man_in_tuxedo:`
-                            : `${user} currently has no jobs! :man_in_tuxedo:`
+                    jobData ? `You are currently a **${jobData.name}**, paid **$${jobData.salary}** per hour! :man_in_tuxedo:` :
+                        `You currently have no jobs! :man_in_tuxedo:` :
+                    jobData ? `${user} is currently a **${jobData.name}**, paid **$${jobData.salary}** per hour! :man_in_tuxedo:` :
+                        `${user} currently has no jobs! :man_in_tuxedo:`
             )
             .setColor('#36393F');
 

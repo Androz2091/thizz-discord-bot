@@ -12,7 +12,6 @@ export default class PromotionCommand extends SlashCommand {
         });
     }
     async run (ctx: CommandContext) {
-
         const category = (client.channels.cache.get(ctx.channelID) as TextChannel).parentID;
         if (category !== process.env.GANG_CAT) {
             ctx.send('Commands can only be executed in the Gang Life category.', {
@@ -30,7 +29,6 @@ export default class PromotionCommand extends SlashCommand {
             });
             return;
         } else {
-
             const requiredWorkTimes = (userData.workLevel || 1)* 10 + userData.workLevel * 2;
             if (userData.workTimes >= requiredWorkTimes) {
                 ctx.send(`:tada: You get your promotion! You will now be paid **$2** additional per hour!`, {
@@ -39,11 +37,10 @@ export default class PromotionCommand extends SlashCommand {
                 });
                 updateUser(ctx.member.id, {
                     workLevel: userData.workLevel + 1
-                })
+                });
             } else {
                 ctx.send(`:x: You need to send \`/work\` **${requiredWorkTimes - userData.workTimes}** times before being able to get a promotion!`);
             }
-
         }
     }
 };

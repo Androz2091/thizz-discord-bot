@@ -15,7 +15,6 @@ export default class TimeCommand extends SlashCommand {
     }
 
     async run (ctx: CommandContext) {
-
         const category = (client.channels.cache.get(ctx.channelID) as TextChannel).parentID;
         if (category !== process.env.GANG_CAT) {
             ctx.send('Commands can only be executed in the Gang Life category.', {

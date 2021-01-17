@@ -12,7 +12,6 @@ export default class JobsCommand extends SlashCommand {
         });
     }
     async run (ctx: CommandContext) {
-
         const category = (client.channels.cache.get(ctx.channelID) as TextChannel).parentID;
         if (category !== process.env.GANG_CAT) {
             ctx.send('Commands can only be executed in the Gang Life category.', {
@@ -25,8 +24,8 @@ export default class JobsCommand extends SlashCommand {
         ctx.send(
             'Here is the list of the available jobs! Use \`/apply\` to apply for a job!\n\n'+
             jobs.reverse().map((job) => `${job.name} - $${job.salary} per hour`).join('\n')
-        , {
-            includeSource: true
-        });
+            , {
+                includeSource: true
+            });
     }
 }

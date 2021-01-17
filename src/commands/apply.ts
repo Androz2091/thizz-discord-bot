@@ -23,7 +23,6 @@ export default class ApplyCommand extends SlashCommand {
         });
     }
     async run (ctx: CommandContext) {
-
         const category = (client.channels.cache.get(ctx.channelID) as TextChannel).parentID;
         if (category !== process.env.GANG_CAT) {
             ctx.send('Commands can only be executed in the Gang Life category.', {
@@ -45,7 +44,7 @@ export default class ApplyCommand extends SlashCommand {
 
         const lastApplyAt = new Date(userData.lastApplyAt).getTime();
         const cooldownEnd = lastApplyAt + applyCooldown;
-        const cooldown = cooldownEnd > Date.now()
+        const cooldown = cooldownEnd > Date.now();
         if (cooldown) {
             ctx.send('You can only apply for a job every one hour in game time, retry in ' + ((cooldownEnd - Date.now())/1000).toFixed(0) + ' seconds.', {
                 includeSource: true
@@ -56,19 +55,16 @@ export default class ApplyCommand extends SlashCommand {
         const jobData = jobs.find((j) => j.name === job)!;
         const hasJob = Math.random() < jobData.chance / 100;
         if (hasJob) {
-
             updateUser(ctx.member.id, {
                 job: jobData.name,
                 lastApplyAt: new Date().toISOString()
             });
-            
+
             ctx.send(':tada: Congratulations, you got the job! Get your salary ' + jobData.salary + ' every hour by using `/work`!', {
                 includeSource: true,
                 ephemeral: false
             });
-
         } else {
-
             updateUser(ctx.member.id, {
                 lastApplyAt: new Date().toISOString()
             });

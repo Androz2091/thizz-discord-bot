@@ -15,7 +15,6 @@ export default class WorkCommand extends SlashCommand {
         });
     }
     async run (ctx: CommandContext) {
-
         const category = (client.channels.cache.get(ctx.channelID) as TextChannel).parentID;
         if (category !== process.env.GANG_CAT) {
             ctx.send('Commands can only be executed in the Gang Life category.', {
@@ -33,10 +32,9 @@ export default class WorkCommand extends SlashCommand {
             });
             return;
         } else {
-
             const lastWorkAt = new Date(userData.lastWorkAt).getTime();
             const cooldownEnd = lastWorkAt + workCooldown;
-            const cooldown = cooldownEnd > Date.now()
+            const cooldown = cooldownEnd > Date.now();
             if (cooldown) {
                 ctx.send('You can only work every one hour in game time, retry in ' + ((cooldownEnd - Date.now())/1000).toFixed(0) + ' seconds.', {
                     includeSource: true
