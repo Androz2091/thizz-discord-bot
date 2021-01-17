@@ -46,7 +46,7 @@ export default class ApplyCommand extends SlashCommand {
         const cooldownEnd = lastApplyAt + applyCooldown;
         const cooldown = cooldownEnd > Date.now();
         if (cooldown) {
-            ctx.send('You can only apply for a job every one hour in game time, retry in ' + ((cooldownEnd - Date.now())/1000).toFixed(0) + ' seconds.', {
+            ctx.send('You can only apply for a job every one hour, retry in ' + ((cooldownEnd - Date.now())/1000/60).toFixed(0) + ' minutes.', {
                 includeSource: true
             });
             return;

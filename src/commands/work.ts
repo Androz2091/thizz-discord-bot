@@ -36,7 +36,7 @@ export default class WorkCommand extends SlashCommand {
             const cooldownEnd = lastWorkAt + workCooldown;
             const cooldown = cooldownEnd > Date.now();
             if (cooldown) {
-                ctx.send('You can only work every one hour in game time, retry in ' + ((cooldownEnd - Date.now())/1000).toFixed(0) + ' seconds.', {
+                ctx.send('You can only work every one hour, retry in ' + ((cooldownEnd - Date.now())/1000/60).toFixed(0) + ' minutes.', {
                     includeSource: true
                 });
                 return;
