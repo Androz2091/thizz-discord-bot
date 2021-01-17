@@ -36,15 +36,28 @@ User.init(
         health: {
             type: DataTypes.INTEGER,
             allowNull: false,
-            defaultValue: 100
+            defaultValue: 100000,
+            set (value: number) {
+                this.setDataValue('health', value * 1000);
+            },
+            get () {
+                return this.getDataValue('health') / 1000;
+            }
         },
         hunger: {
             type: DataTypes.INTEGER,
             allowNull: false,
-            defaultValue: 100
+            defaultValue: 100000,
+            set (value: number) {
+                if (value > 100) value = 100;
+                this.setDataValue('hunger', Math.round(value * 1000));
+            },
+            get () {
+                return this.getDataValue('hunger') / 1000;
+            }
         },
         foods: {
-            type: new DataTypes.ARRAY(DataTypes.JSON),
+            type: DataTypes.JSONB,
             allowNull: false,
             defaultValue: []
         },
@@ -76,7 +89,7 @@ User.init(
 );
 
 if (process.env.ENVIRONMENT === 'development') {
-    User.sync({ force: true }).then(() => console.log('User table created'));
+    User.sync({ alter: true }).then(() => console.log('User table created'));
 }
 
 export const getUsers = (): Promise<User[]> => {

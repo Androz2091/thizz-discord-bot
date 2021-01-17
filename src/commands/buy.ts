@@ -25,9 +25,19 @@ export default class BuyCommand extends SlashCommand {
     }
 
     async parseChannel (channel: TextChannel): Promise<Food[]> {
+        const priceRegex = /^([^$]+)([$0-9.]+)\s([0-9]+%)/;
         await channel.messages.fetch({ limit: 100 });
         return channel.messages.cache.map((message) => {
-            return message.content.split('\n').filter((e) => e.includes('$')).map((e) => ({ name: e.split('$')[0].trim(), price: parseInt(e.split('$')[1].split(' ')[0]), points: 0 }));
+            return message.content.split('\n')
+                .filter((e) => priceRegex.test(e))
+                .map((e) => {
+                    const [, foodName, foodPrice, foodPoints] = e.match(priceRegex) as RegExpMatchArray;
+                    return {
+                        name: foodName.trim(),
+                        price: parseInt(foodPrice.split('$')[1]),
+                        points: parseInt(foodPoints.split('%')[0])
+                    };
+                });
         }).flat();
     }
 
@@ -45,8 +55,8 @@ export default class BuyCommand extends SlashCommand {
         const userData = await getUser(ctx.member.id);
 
         const foods = await this.parseChannel(menuChannel);
-        const foodName = ctx.options.food;
-        const foodData = foods.find((food) => food.name === foodName);
+        const foodName = (ctx.options.food as string).toLowerCase();
+        const foodData = foods.find((food) => food.name.toLowerCase() === foodName);
         if (!foodData) {
             ctx.send('This type of food does not exist!', {
                 ephemeral: true,
@@ -56,7 +66,7 @@ export default class BuyCommand extends SlashCommand {
         }
 
         if (foodData.price > userData.money) {
-            ctx.send(`:x: You need **${foodData.price}** to buy this ${foodData.name}!`, {
+            ctx.send(`:x: You need **$${foodData.price}** to buy this ${foodData.name}!`, {
                 includeSource: true
             });
             return;
@@ -65,6 +75,10 @@ export default class BuyCommand extends SlashCommand {
         updateUser(ctx.member.id, {
             money: userData.money - foodData.price,
             foods: [...userData.foods, ...[foodData]]
+        });
+
+        ctx.send(`:white_check_mark: Congratulations, you bought a ${foodData.name}! You can eat it using \`/eat ${foodData.name}\`. You will gain **+${foodData.points}%** of hunger!`, {
+            includeSource: true
         });
     }
 };

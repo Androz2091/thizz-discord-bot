@@ -26,7 +26,7 @@ export default class EatCommand extends SlashCommand {
         const userData = await getUser(ctx.member.id);
 
         const foodName = ctx.options.food;
-        const foodData = userData.foods.find((food) => food.name === foodName);
+        const foodData = userData.foods.find((food) => food.name.toLocaleLowerCase() === (foodName as string).toLowerCase());
         if (!foodData) {
             ctx.send(`You don't have any food named ${foodName}!`, {
                 ephemeral: true,
@@ -55,6 +55,10 @@ export default class EatCommand extends SlashCommand {
         updateUser(ctx.member.id, {
             hunger: userData.hunger + foodData.points,
             foods: newFoods
+        });
+
+        ctx.send(`:white_check_mark: You've eaten a ${foodData.name} and have gained **+${foodData.points}%** of hunger!`, {
+            includeSource: true
         });
     }
 };
