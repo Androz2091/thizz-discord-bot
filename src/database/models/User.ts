@@ -108,14 +108,22 @@ export const updateUsers = (): Promise<void> => {
 };
 */
 
-export const getUser = (userID: Snowflake): Promise<User> => {
+export const createUser = (userID: Snowflake): Promise<User> => {
     return new Promise((resolve) => {
-        User.findOrCreate({
+        User.create().then((res) => {
+            resolve(res);
+        });
+    });
+};
+
+export const getUser = (userID: Snowflake): Promise<User|null> => {
+    return new Promise((resolve) => {
+        User.findOne({
             where: {
                 id: userID
             }
         }).then((res) => {
-            resolve(res[0]);
+            resolve(res);
         });
     });
 };

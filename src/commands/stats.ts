@@ -28,7 +28,15 @@ export default class StatsCommand extends SlashCommand {
         const tag: string = user ? user.tag : userID;
 
         const userData = await getUser(userID);
-        console.log(userData.hunger.toString());
+
+        if (!userData) {
+            ctx.send(`You need to create your character before running this command using \`/create-character\`.`, {
+                ephemeral: true,
+                includeSource: false
+            });
+            return;
+        }
+
         const hunger = userData.hunger.toString().includes('.') && !userData.hunger.toFixed(1).endsWith('.0') ?
             userData.hunger.toFixed(1) :
             Math.round(userData.hunger);

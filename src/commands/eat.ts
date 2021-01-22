@@ -25,6 +25,14 @@ export default class EatCommand extends SlashCommand {
     async run (ctx: CommandContext) {
         const userData = await getUser(ctx.member.id);
 
+        if (!userData) {
+            ctx.send(`You need to create your character before running this command using \`/create-character\`.`, {
+                ephemeral: true,
+                includeSource: false
+            });
+            return;
+        }
+
         const foodName = ctx.options.food;
         const foodData = userData.foods.find((food) => food.name.toLocaleLowerCase() === (foodName as string).toLowerCase());
         if (!foodData) {

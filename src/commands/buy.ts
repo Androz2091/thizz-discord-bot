@@ -42,6 +42,15 @@ export default class BuyCommand extends SlashCommand {
     }
 
     async run (ctx: CommandContext) {
+        const userData = await getUser(ctx.member.id);
+        if (!userData) {
+            ctx.send(`You need to create your character before running this command using \`/create-character\`.`, {
+                ephemeral: true,
+                includeSource: false
+            });
+            return;
+        }
+
         const channel = client.channels.cache.get(ctx.channelID) as TextChannel;
         const menuChannel = channel.parent?.children.find((child) => ['menu', 'shop', 'stock'].includes(child.name)) as TextChannel;
         if (!menuChannel) {
@@ -51,8 +60,6 @@ export default class BuyCommand extends SlashCommand {
             });
             return;
         }
-
-        const userData = await getUser(ctx.member.id);
 
         const foods = await this.parseChannel(menuChannel);
         const foodName = (ctx.options.food as string).toLowerCase();

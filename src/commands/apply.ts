@@ -23,6 +23,15 @@ export default class ApplyCommand extends SlashCommand {
     async run (ctx: CommandContext) {
         const job = ctx.options.job as string;
         const userData = await getUser(ctx.member.id);
+
+        if (!userData) {
+            ctx.send(`You need to create your character before running this command using \`/create-character\`.`, {
+                ephemeral: true,
+                includeSource: false
+            });
+            return;
+        }
+
         if (userData.job) {
             ctx.send('You already have a job, use `/quit` to quit your job and apply again.', {
                 includeSource: false,

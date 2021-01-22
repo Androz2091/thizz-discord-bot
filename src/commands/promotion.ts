@@ -11,6 +11,15 @@ export default class PromotionCommand extends SlashCommand {
     }
     async run (ctx: CommandContext) {
         const userData = await getUser(ctx.member.id);
+
+        if (!userData) {
+            ctx.send(`You need to create your character before running this command using \`/create-character\`.`, {
+                ephemeral: true,
+                includeSource: false
+            });
+            return;
+        }
+
         if (!userData.job) {
             ctx.send('You currently don\'t have any job, use `/apply` to apply for a job.', {
                 includeSource: true,
