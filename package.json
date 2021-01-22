@@ -5,7 +5,7 @@
   "author": "Androz2091 <androz2091@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node .",
+    "start": "rm -rf dist && yarn run build && node .",
     "build": "tsc"
   },
   "dependencies": {
