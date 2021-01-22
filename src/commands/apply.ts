@@ -25,7 +25,7 @@ export default class ApplyCommand extends SlashCommand {
         const userData = await getUser(ctx.member.id);
 
         if (!userData) {
-            ctx.send(`You need to create your character before running this command using \`/create-character\`.`, {
+            ctx.send(`You need to create your character before running this command using \`/character create\`.`, {
                 ephemeral: true,
                 includeSource: false
             });

@@ -38,7 +38,7 @@ export default class ThizzClient extends AkairoClient {
                 )
             )
             .registerCommandsIn(path.join(__dirname, '..', 'commands/'))
-            .syncCommands();
+            .syncCommandsIn(process.env.THIZZ_SERVER!);
 
         this.listenerHandler = new ListenerHandler(this, {
             directory: path.join(__dirname, '..', 'listeners/')

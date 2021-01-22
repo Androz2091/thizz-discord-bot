@@ -110,8 +110,22 @@ export const updateUsers = (): Promise<void> => {
 
 export const createUser = (userID: Snowflake): Promise<User> => {
     return new Promise((resolve) => {
-        User.create().then((res) => {
+        User.create({
+            id: userID
+        }).then((res) => {
             resolve(res);
+        });
+    });
+};
+
+export const deleteUser = (userID: Snowflake): Promise<void> => {
+    return new Promise((resolve) => {
+        User.destroy({
+            where: {
+                id: userID
+            }
+        }).then(() => {
+            resolve();
         });
     });
 };
