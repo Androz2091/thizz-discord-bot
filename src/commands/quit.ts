@@ -10,17 +10,6 @@ export default class QuitCommand extends SlashCommand {
         });
     }
     async run (ctx: CommandContext) {
-        /*
-        const category = (client.channels.cache.get(ctx.channelID) as TextChannel).parentID;
-        if (category !== process.env.GANG_CAT) {
-            ctx.send('Commands can only be executed in the Gang Life category.', {
-                includeSource: false,
-                ephemeral: true
-            });
-            return;
-        }
-        */
-
         const userData = await getUser(ctx.member.id);
         if (!userData.job) {
             ctx.send('You currently don\'t have any job, use `/apply` to apply for a job.', {

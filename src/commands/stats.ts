@@ -21,17 +21,6 @@ export default class StatsCommand extends SlashCommand {
     }
 
     async run (ctx: CommandContext) {
-        /*
-        const category = (client.channels.cache.get(ctx.channelID) as TextChannel).parentID;
-        if (category !== process.env.GANG_CAT) {
-            ctx.send('Commands can only be executed in the Gang Life category.', {
-                includeSource: false,
-                ephemeral: true
-            });
-            return;
-        }
-        */
-
         const userID = ctx.options.user as Snowflake || ctx.member.id;
         const isAuthor = userID === ctx.member.id;
 
