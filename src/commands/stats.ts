@@ -3,6 +3,7 @@ import { CommandContext, SlashCommand, SlashCreator } from 'slash-create';
 import { client } from '../bot';
 import { getUser } from '../database/models/User';
 import jobs from '../assets/jobs.json';
+import { EMBED_COLOR } from '../util/Constants';
 
 export default class StatsCommand extends SlashCommand {
     constructor (creator: SlashCreator) {
@@ -63,7 +64,7 @@ export default class StatsCommand extends SlashCommand {
                     userData.foods.length > 0 ? `${user} currently has the folllowing foods in their bag:\n\n${userData.foods.map((food) => `${food.name} | **+${food.points}%**`).join('\n')}` :
                         `${user} currently has no foods in their bag!`
             )
-            .setColor('#36393F');
+            .setColor(EMBED_COLOR);
 
         ctx.send(`<@${ctx.member.id}>, here are ${tag}'s stats!`, {
             includeSource: true,
