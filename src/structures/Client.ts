@@ -1,7 +1,8 @@
 import path from 'path';
 import { AkairoClient, ListenerHandler } from 'discord-akairo';
 import TempChannels from 'discord-temp-channels';
-import type { GuildMember, VoiceChannel } from 'discord.js';
+import type { GuildMember, TextChannel, VoiceChannel } from 'discord.js';
+import { Collection } from 'discord.js';
 import TaskHandler from '../handlers/task';
 import { SlashCreator, GatewayServer } from 'slash-create';
 
@@ -11,10 +12,15 @@ export default class ThizzClient extends AkairoClient {
     public tempChannelsHandler: TempChannels;
     public taskHandler: TaskHandler;
 
+    public typingChannels: Collection<string, TextChannel>;
+
     constructor () {
         super({
+            partials: ['CHANNEL'],
             ownerID: process.env.BOT_OWNER!
         });
+
+        this.typingChannels = new Collection();
 
         this.slashCommandHandler = new SlashCreator({
             applicationID: process.env.BOT_ID!,
