@@ -37,9 +37,6 @@ export default class MessageListener extends Listener {
         } else if (message.channel.name.startsWith('ticket-')) {
             const relatedUserID = message.channel.topic!.match(/\((\d{16,32})\)/)![1];
             if (relatedUserID) {
-                message.delete();
-                const webhooks = await message.channel.fetchWebhooks();
-                await webhooks.first()?.send(message.content, this.createWebhookOptions(message));
                 const user = await client.users.fetch(relatedUserID);
                 user.send(`**${message.author.tag}**: ${message.content}`, {
                     files: message.attachments.map((attachment) => ({ name: attachment.name!, attachment: attachment.url }))
