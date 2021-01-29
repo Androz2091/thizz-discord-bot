@@ -25,7 +25,13 @@ export default class ReactionAddListener extends Listener {
             permissionOverwrites: [
                 {
                     id: ticketsCategory.guild.id,
-                    deny: ['VIEW_CHANNEL']
+                    deny: ['VIEW_CHANNEL'],
+                    type: 'role'
+                },
+                {
+                    id: process.env.ADMIN_ROLE!,
+                    allow: ['VIEW_CHANNEL'],
+                    type: 'role'
                 }
             ]
         });

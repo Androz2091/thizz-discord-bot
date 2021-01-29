@@ -88,9 +88,7 @@ User.init(
     }
 );
 
-if (process.env.ENVIRONMENT === 'development') {
-    if (process.argv.includes('--reset')) User.sync({ force: true }).then(() => console.log('User table created'));
-}
+if (process.argv.includes('--init')) setTimeout(() => User.sync({ force: true }).then(() => console.log('User table created')), 5000);
 if (process.argv.includes('--sync')) User.sync({ alter: true }).then(() => console.log('User table synced'));
 
 export const getUsers = (): Promise<User[]> => {
