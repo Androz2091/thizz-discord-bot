@@ -59,7 +59,8 @@ export default class ThizzClient extends AkairoClient {
             channel.overwritePermissions([
                 {
                     id: member.user.id,
-                    allow: ['MANAGE_CHANNELS']
+                    allow: ['MANAGE_CHANNELS'],
+                    type: 'member'
                 }
             ]);
         });
